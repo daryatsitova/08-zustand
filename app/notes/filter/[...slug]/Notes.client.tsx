@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 import toast, { Toaster } from 'react-hot-toast';
+import Link from 'next/link';
 import { fetchNotes, NotesHttpResponse } from '@/lib/api';
 
 import css from './NotesPage.module.css';
@@ -12,8 +13,6 @@ import NoteList from '@/components/NoteList/NoteList';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import Loader from '@/components/Loader/Loader';
 import Pagination from '@/components/Pagination/Pagination';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import SearchBox from '@/components/SearchBox/SearchBox';
 
 interface AppClientProps {
@@ -21,7 +20,6 @@ interface AppClientProps {
 }
 
 export default function AppClient({ tag }: AppClientProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -35,9 +33,6 @@ export default function AppClient({ tag }: AppClientProps) {
     saveDebouncedQuery(event.target.value);
     setCurrentPage(1);
   };
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   const { data, isLoading, isError, isSuccess } = useQuery<NotesHttpResponse>({
     queryKey: ['notes', { query: debouncedQuery, page: currentPage, tag }],
@@ -66,17 +61,10 @@ export default function AppClient({ tag }: AppClientProps) {
               setCurrentPage={setCurrentPage}
             />
           )}
-          {
-            <button className={css.button} onClick={openModal}>
-              Create note +
-            </button>
-          }
+          <Link href="/notes/action/create" className={css.button}>
+            Create note +
+          </Link>
         </header>
-        {isModalOpen && (
-          <Modal onClose={closeModal}>
-            <NoteForm onClose={closeModal} />
-          </Modal>
-        )}
         {isError ? (
           <ErrorMessage />
         ) : (
