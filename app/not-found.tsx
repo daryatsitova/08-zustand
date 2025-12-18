@@ -1,4 +1,23 @@
 import css from './Home.module.css';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: '404 | Page Not Found',
+  description: 'This page was not found',
+  openGraph: {
+    title: '404 | Page Not Found',
+    description: 'This page was not found',
+    url: 'https://notehub.com/404',
+    images: [
+      {
+        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Note Hub 404 page image',
+      },
+    ],
+  },
+};
 
 const NotFound = () => {
   return (
