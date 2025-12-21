@@ -26,12 +26,12 @@ export default function AppClient({ tag }: AppClientProps) {
 
   const saveDebouncedQuery = useDebouncedCallback((query: string) => {
     setDebouncedQuery(query);
+    setCurrentPage(1); 
   }, 300);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
     saveDebouncedQuery(event.target.value);
-    setCurrentPage(1);
   };
 
   const { data, isLoading, isError, isSuccess } = useQuery<NotesHttpResponse>({
